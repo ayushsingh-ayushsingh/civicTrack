@@ -13,7 +13,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Link from "next/link";
-import { User, User2Icon } from "lucide-react";
+import { User2Icon } from "lucide-react";
 
 export default function AvatarDropdown({ imageSrc = "" }: { imageSrc: string }) {
     return (
@@ -46,27 +46,11 @@ export default function AvatarDropdown({ imageSrc = "" }: { imageSrc: string }) 
                         </Link>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
-                    <DropdownMenuGroup>
-                        {/* <DropdownMenuItem>Team</DropdownMenuItem> */}
-                        <DropdownMenuSub>
-                            <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
-                            <DropdownMenuPortal>
-                                <DropdownMenuSubContent>
-                                    <DropdownMenuItem>Email</DropdownMenuItem>
-                                    <DropdownMenuItem>Message</DropdownMenuItem>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem>More...</DropdownMenuItem>
-                                </DropdownMenuSubContent>
-                            </DropdownMenuPortal>
-                        </DropdownMenuSub>
-                    </DropdownMenuGroup>
-                    {/* <DropdownMenuSeparator /> */}
-                    {/* <DropdownMenuItem>GitHub</DropdownMenuItem> */}
-                    {/* <DropdownMenuItem disabled>API</DropdownMenuItem> */}
-                    <DropdownMenuSeparator />
                     <DropdownMenuItem>
                         {/* <SignOut /> */}
-                        SignOut
+                        <Link href="/login">
+                            SignOut
+                        </Link>
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>

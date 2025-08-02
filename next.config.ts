@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "external-content.duckduckgo.com",
       },
+      {
+        protocol: "https",
+        hostname: "placeholdit.com",
+      },
     ],
   },
 };
