@@ -42,7 +42,13 @@ export default function Navbar() {
 
     useEffect(() => {
         const stored = localStorage.getItem(USER_ISSUES_KEY);
-        if (stored) setUserIssues(JSON.parse(stored));
+        if (stored) {
+            try {
+                setUserIssues(JSON.parse(stored));
+            } catch (error) {
+                console.error("Error loading user issues:", error);
+            }
+        }
     }, []);
 
     useEffect(() => {
@@ -56,7 +62,7 @@ export default function Navbar() {
         imageUrl: "",
     });
 
-    function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
+    function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const { name, value } = e.target;
         setNewIssue((prev) => ({ ...prev, [name]: value }));
     }
@@ -64,17 +70,22 @@ export default function Navbar() {
     // Add new issue at the start of array
     function addNewIssue(closeDialog: () => void) {
         if (!newIssue.title || !newIssue.description || !newIssue.category) {
-            alert("Please fill all fields");
+            alert("Please fill all required fields");
             return;
         }
-        const newId = userIssues.length ? userIssues[0].id + 1 : 1; // increment based on newest id at 0 index
+
+        const newId = userIssues.length ? userIssues[0].id + 1 : 1000; // Start user IDs from 1000
+        const defaultImageUrl = "https://placeholdit.com/600x400/dddddd/999999?text=User%20Issue";
+
         const issueToAdd: Issue = {
             ...newIssue,
             id: newId,
             date: new Date().toLocaleDateString("en-GB"),
             status: "Reported",
+            imageUrl: newIssue.imageUrl || defaultImageUrl,
         };
-        setUserIssues((prev) => [issueToAdd, ...prev]); // prepend
+
+        setUserIssues((prev) => [issueToAdd, ...prev]); // prepend to keep newest first
         setNewIssue({ title: "", description: "", category: "", imageUrl: "" });
         closeDialog();
     }
@@ -128,15 +139,11 @@ export default function Navbar() {
                                         <Button variant={"link"}>Report New Issue</Button>
                                     </DialogTrigger>
                                     <DialogContent className="max-w-md max-h-[70vh] flex flex-col">
-                                        <form
-                                            onSubmit={(e) => {
-                                                e.preventDefault();
-                                            }}
-                                            className="flex-1 overflow-y-auto flex flex-col gap-4 mt-4 p-2"
-                                        >
+                                        <div className="flex-1 overflow-y-auto flex flex-col gap-4 mt-4 p-2">
                                             <DialogHeader>
                                                 <DialogTitle>Report a New Issue</DialogTitle>
                                             </DialogHeader>
+
                                             <div>
                                                 <Label htmlFor="title" className="my-2">Title</Label>
                                                 <Input
@@ -206,7 +213,7 @@ export default function Navbar() {
                                                     placeholder="Image URL"
                                                 />
                                             </div>
-                                        </form>
+                                        </div>
 
                                         <DialogFooter>
                                             <Button
